@@ -1,12 +1,12 @@
 import vectorize_text from "vectorize-text";
 
-export default function vectorize_label(frontDetails, inst_axis, inst_name) {
+export default function vectorize_label(fontDetails, inst_axis, inst_name) {
   const canvas = new OffscreenCanvas(8192, 1024);
   const context = canvas.getContext("2d");
   const vect_text_attrs = {
     textAlign: "left",
     triangles: true,
-    size: frontDetails,
+    size: fontDetails,
     font: '"Open Sans", verdana, arial, sans-serif',
     canvas,
     context,
