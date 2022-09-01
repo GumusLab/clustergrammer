@@ -1,15 +1,15 @@
 import vectorize_text from "vectorize-text";
-import { dropFromLabelQueue } from "../state/reducers/labels/labelsSlice";
 
-export default function vectorize_label(store, inst_axis, inst_name) {
-  const dispatch = store.dispatch;
-  const { labels } = store.getState();
-
+export default function vectorize_label(frontDetails, inst_axis, inst_name) {
+  const canvas = new OffscreenCanvas(8192, 1024);
+  const context = canvas.getContext("2d");
   const vect_text_attrs = {
     textAlign: "left",
     triangles: true,
-    size: labels.font_detail,
+    size: frontDetails,
     font: '"Open Sans", verdana, arial, sans-serif',
+    canvas,
+    context,
   };
   if (inst_axis === "col") {
     vect_text_attrs.textAlign = "left";
@@ -18,8 +18,5 @@ export default function vectorize_label(store, inst_axis, inst_name) {
     vect_text_attrs.textAlign = "right";
     vect_text_attrs.textBaseline = "middle";
   }
-  dispatch(
-    dropFromLabelQueue({ queue: "low", axis: inst_axis, label: inst_name })
-  );
   return vectorize_text(inst_name, vect_text_attrs);
 }
