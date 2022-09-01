@@ -9,7 +9,10 @@ export default (function generateTextTriangleParams(store, viz_area) {
   const text_triangles = {
     row: {},
     col: {},
-    draw: {},
+    draw: {
+      row: [],
+      col: [],
+    },
   };
   store.dispatch(
     mutateVisualizationState({
