@@ -1,9 +1,10 @@
 import { cloneDeep } from "lodash";
 import * as _ from "underscore";
 import WebworkerPromise from 'webworker-promise';
-import { dropFromLabelQueue, pushHighQueueLabel } from "../state/reducers/labels/labelsSlice";
+import { dropFromLabelQueue, mutateLabelsState, pushHighQueueLabel } from "../state/reducers/labels/labelsSlice";
 import { mutateVisualizationState } from "../state/reducers/visualization/visualizationSlice";
 import { MAX_LABEL_LENGTH } from "./labels.const";
+import vectorize_label from "./vectorizeLabel";
 
 let vectorizeWorker = undefined;
 // check it offscreencanvs is supported.
@@ -85,6 +86,7 @@ export default function gather_text_triangles(store, viz_area, inst_axis) {
           }
         }
       }
+    }
   });
 
   // async update
@@ -101,7 +103,14 @@ export default function gather_text_triangles(store, viz_area, inst_axis) {
       });
       store.dispatch(
         mutateVisualizationState({
-          text_triangles,
+          text_triangles: {
+            ...text_triangles,
+          }
+        })
+      );
+      store.dispatch(
+        mutateLabelsState({
+          draw_labels: true,
         })
       );
     });

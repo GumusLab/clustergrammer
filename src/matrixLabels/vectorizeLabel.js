@@ -6,8 +6,6 @@ export default function vectorize_label(fontDetails, inst_axis, inst_name, async
     triangles: true,
     size: fontDetails,
     font: '"Open Sans", verdana, arial, sans-serif',
-    canvas,
-    context,
   };
 
   if (async) {
