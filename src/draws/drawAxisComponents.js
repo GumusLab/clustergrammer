@@ -70,9 +70,13 @@ export default (function drawAxisComponents(
         ) {
           gatherTextTriangles(store, viz_area, inst_axis);
         }
-        regl(text_triangle_args)(
-          store.getState().visualization.text_triangles.draw[inst_axis]
-        );
+        // we have to check for existence of text vectors to draw now, as they
+        // might be created async and we might not have all of them
+        if (state.visualization.text_triangles.draw[inst_axis] !== false) {
+          regl(text_triangle_args)(
+            store.getState().visualization.text_triangles.draw[inst_axis]
+          );
+        }
       }
     } else {
       if (state.visualization.text_triangles.draw[inst_axis] !== false) {

@@ -10,8 +10,8 @@ export default (function generateTextTriangleParams(store, viz_area) {
     row: {},
     col: {},
     draw: {
-      row: [],
-      col: [],
+      row: false,
+      col: false,
     },
   };
   store.dispatch(
