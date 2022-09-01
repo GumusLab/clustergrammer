@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import cgl, { ClustergrammerProps } from "./cg";
+// import data from "./data/cytof.json";
 import data from "./data/cytof.json";
 
 function Clustergrammer() {
