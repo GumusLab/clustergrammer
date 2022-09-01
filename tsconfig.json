@@ -11,7 +11,9 @@
         "inlineSourceMap": false,
         "lib": [
             "ESNext",
-            "DOM"
+            "DOM",
+            "ScriptHost",
+            "WebWorker"
         ],
         "listEmittedFiles": false,
         "listFiles": false,
