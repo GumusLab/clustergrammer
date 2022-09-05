@@ -4,7 +4,7 @@ import WebworkerPromise from "webworker-promise";
 import {
   dropFromLabelQueue,
   mutateLabelsState,
-  pushHighQueueLabel,
+  pushHighQueueLabel
 } from "../state/reducers/labels/labelsSlice";
 import { mutateVisualizationState } from "../state/reducers/visualization/visualizationSlice";
 import { MAX_LABEL_LENGTH } from "./labels.const";
@@ -14,7 +14,9 @@ let vectorizeWorker = undefined;
 // check it offscreencanvs is supported.
 if (typeof OffscreenCanvas !== "undefined") {
   vectorizeWorker = new WebworkerPromise(
-    new Worker(new URL("./vectorizeWorker.js", import.meta.url))
+    new Worker(new URL("./vectorizeWorker.js", import.meta.url), {
+      type: "module",
+    })
   );
 }
 export default function gather_text_triangles(store, viz_area, inst_axis) {
