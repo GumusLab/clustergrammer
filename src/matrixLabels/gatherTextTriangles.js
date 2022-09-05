@@ -5,7 +5,7 @@ import { dropFromLabelQueue, pushHighQueueLabel } from "../state/reducers/labels
 import { mutateVisualizationState } from "../state/reducers/visualization/visualizationSlice";
 import { MAX_LABEL_LENGTH } from "./labels.const";
 
-const vectorizeWorker = new WebworkerPromise(new Worker(new URL("./vectorizeWorker.js", import.meta.url)));
+const vectorizeWorker = new WebworkerPromise(new Worker(new URL("./vectorizeWorker.js", import.meta.url), { type: "module" }));
 
 export default function gather_text_triangles(store, viz_area, inst_axis) {
   const {
