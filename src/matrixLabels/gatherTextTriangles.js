@@ -4,7 +4,7 @@ import WebworkerPromise from "webworker-promise";
 import {
   dropFromLabelQueue,
   mutateLabelsState,
-  pushHighQueueLabel
+  pushHighQueueLabel,
 } from "../state/reducers/labels/labelsSlice";
 import { mutateVisualizationState } from "../state/reducers/visualization/visualizationSlice";
 import { MAX_LABEL_LENGTH } from "./labels.const";
@@ -13,6 +13,7 @@ import vectorize_label from "./vectorizeLabel";
 let vectorizeWorker = undefined;
 // check it offscreencanvs is supported.
 if (typeof OffscreenCanvas !== "undefined") {
+  // https://stackoverflow.com/a/45578811
   vectorizeWorker = new WebworkerPromise(
     new Worker(new URL("./vectorizeWorker.js", import.meta.url), {
       type: "module",
