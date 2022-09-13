@@ -5,7 +5,7 @@ import { CatArgsManager } from "./cats/manager/catArgsManager";
 import draw_webgl_layers from "./draws/drawWebglLayers";
 import type {
   ClustergrammerInstance,
-  ClustergrammerProps,
+  ClustergrammerProps
 } from "./index.types";
 import recluster from "./recluster/recluster";
 import runReorder from "./reorders/runReorder";
@@ -16,32 +16,6 @@ import { createCanvasContainer } from "./ui/functions/createCanvasContainer";
 import { UI } from "./ui/ui";
 import { CANVAS_CONTAINER_CLASSNAME } from "./ui/ui.const";
 import zoom_rules_high_mat from "./zoom/zoomRulesHighMat";
-
-export type ClustergrammerInstance = {};
-
-export type OnClickCallbackProps = {
-  row: string | null;
-  col: string | null;
-  clickType: TooltipState["tooltip_type"];
-};
-
-export type OnClickCallback =
-  | (({ row, col, clickType }: OnClickCallbackProps) => void)
-  | undefined;
-
-export type ClustergrammerProps = {
-  use_hzome?: boolean;
-  container: HTMLElement;
-  network: NetworkState;
-  width: number | string;
-  height: number | string;
-  showControls?: boolean;
-  showDendroSliders?: boolean;
-  onClick?: OnClickCallback;
-  disableTooltip?: boolean;
-  enabledTooltips?: Array<"dendro" | "cat" | "cell" | "label" | string>;
-  labelLength?: number;
-};
 
 const updateSearchedRows = 
   (
