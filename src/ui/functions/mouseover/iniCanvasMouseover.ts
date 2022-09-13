@@ -1,112 +1,29 @@
-import { computePosition, flip, offset, shift } from "@floating-ui/dom";
-import { select } from "d3-selection";
 import { NamespacedStore } from "../../../state/store/store";
-import { CANVAS_CONTAINER_CLASSNAME } from "../../ui.const";
+import { hideTooltip } from "../../../tooltip/hideTooltip";
+import { makeTooltip } from "../../../tooltip/makeTooltip";
+import { tooltipMouseMove } from "./tooltipMouseMove";
 
-export const TOOLTIP_ID = "cg-tooltip";
+export default function ini_canvas_mouseover(store: NamespacedStore) {
+  const baseContainerId = store
+    .select("visualization")
+    .rootElementId.replace("#", "");
 
-export const hideTooltip = () => {
-  const tooltip = document.getElementById(TOOLTIP_ID);
-  if (tooltip) {
-    Object.assign(tooltip.style, {
-      display: "none",
-    });
-  }
-};
+  const tooltipId = makeTooltip(store);
 
-const showTooltip = ({
-  clientX,
-  clientY,
-}: {
-  clientX: number;
-  clientY: number;
-}) => {
-  const tooltip = document.getElementById(TOOLTIP_ID);
-  if (tooltip) {
-    const virtualEl = {
-      getBoundingClientRect() {
-        return {
-          width: 0,
-          height: 0,
-          x: clientX,
-          y: clientY,
-          left: clientX,
-          right: clientX,
-          top: clientY,
-          bottom: clientY,
-        };
-      },
-    };
+  const canvas = document
+    .getElementById(baseContainerId)
+    ?.getElementsByTagName("canvas")?.[0];
 
-    computePosition(virtualEl, tooltip, {
-      placement: "top",
-      middleware: [offset(10), flip(), shift()],
-    }).then(({ x, y }) => {
-      Object.assign(tooltip.style, {
-        display: "block",
-        top: `${y}px`,
-        left: `${x}px`,
-      });
-    });
-  }
-};
-
-export default function ini_canvas_mouseover(
-  store: NamespacedStore,
-  container: any
-) {
-  select(container)
-    .select(`.${CANVAS_CONTAINER_CLASSNAME}`)
-    .append("div")
-    .attr("id", TOOLTIP_ID);
-
-  const tooltip = document.getElementById(TOOLTIP_ID);
-  if (tooltip) {
-    Object.assign(tooltip.style, {
-      position: "absolute",
-      background: "gray",
-      padding: "0.5rem",
-      color: "white",
-      "box-sizing": "border-box",
-      display: "none",
-      "pointer-events": "none",
-    });
-  }
-
-  const canvas = document.getElementsByTagName("canvas")?.[0];
-
-  canvas.addEventListener("mousemove", (e) => {
+  canvas?.addEventListener("mousemove", (e) => {
     // show a tooltip if we're on a matrix cell
-    const tooltip = document.getElementById(TOOLTIP_ID);
-    if (
-      tooltip &&
-      store.select("tooltip").show_tooltip &&
-      !store.select("tooltip").disable_tooltip
-    ) {
-      if (
-        store.select("tooltip").tooltip_type &&
-        store.select("tooltip").tooltip_type !== "out-of-bounds" &&
-        store
-          .select("tooltip")
-          .enabledTooltips.some((x: any) =>
-            store.select("tooltip").tooltip_type?.includes(x)
-          )
-      ) {
-        if (tooltip.textContent != store.select("tooltip").text) {
-          tooltip.textContent = store.select("tooltip").text;
-        }
-        showTooltip(e);
-      } else {
-        hideTooltip();
-      }
-    }
+    tooltipMouseMove(tooltipId, store, e);
   });
-  canvas.addEventListener("mouseleave", () => {
+  canvas?.addEventListener("mouseleave", () => {
     store.dispatch(store.actions.mutateTooltipState({ show_tooltip: false }));
-    hideTooltip();
+    hideTooltip(tooltipId);
   });
-  canvas.addEventListener("mouseenter", () => {
+  canvas?.addEventListener("mouseenter", () => {
     store.dispatch(store.actions.mutateTooltipState({ show_tooltip: true }));
-    hideTooltip();
+    hideTooltip(tooltipId);
   });
 }

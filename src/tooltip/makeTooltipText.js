@@ -2,6 +2,7 @@ import { select } from "d3-selection";
 import * as _ from "underscore";
 import { getHzomeGeneInfo } from "./getHzomeGeneInfo";
 import make_dendro_tooltip from "./makeDendroTooltip";
+import { TOOLTIP_TYPES } from "./tooltip.const";
 
 export default (function makeTooltipText(
   regl,
@@ -13,7 +14,7 @@ export default (function makeTooltipText(
 ) {
   let inst_axis;
   let tooltip_text;
-  if (store.select("tooltip").tooltip_type === "matrix-cell") {
+  if (store.select("tooltip").tooltip_type === TOOLTIP_TYPES.MATRIX_CELL) {
     // Matrix-Cell Tooltip
     // //////////////////////
     // row name

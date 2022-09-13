@@ -1,7 +1,7 @@
 import { merge } from "lodash";
 import { Regl } from "regl";
 import * as _ from "underscore";
-import { ClustergrammerProps } from "../../index";
+import { ClustergrammerProps } from "../../index.types";
 import calcTextOffsets from "../../matrixLabels/calcTextOffsets";
 import makeLabelQueue from "../../matrixLabels/makeLabelQueue";
 import { NetworkDataNode } from "../../types/network";
@@ -115,7 +115,7 @@ export default function initialize_params(
   );
 
   // matrix color parameters
-  setCatVizMatrixColors(store);
+  setCatVizMatrixColors(store, args);
 
   // dendrogram state
   initializeDendrogramState(store);

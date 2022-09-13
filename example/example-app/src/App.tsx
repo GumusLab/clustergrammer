@@ -1,10 +1,11 @@
 import React, { useEffect, useRef } from "react";
-import cgl, { ClustergrammerProps } from "./cg";
+import cgl from "./cg";
+import { ClustergrammerProps } from "./cg/index.types";
 import cytofData from "./data/cytof.json";
 import multViewData from './data/mult_view.json';
 
 
-const getArgs = (container: HTMLElement, data: any): ClustergrammerProps => {
+const getArgs = (container: HTMLElement, data: any, otherProps: Partial<ClustergrammerProps>): ClustergrammerProps => {
   return {
     container,
     network: data as unknown as ClustergrammerProps["network"],
@@ -14,7 +15,8 @@ const getArgs = (container: HTMLElement, data: any): ClustergrammerProps => {
     onClick: ({ row, col }) => console.log(row, col),
     // disableTooltip: true,
     enabledTooltips: ["dendro", "cell"],
-    showDendroSliders: false
+    showDendroSliders: false,
+    ...otherProps,
   }
 }
 
@@ -24,13 +26,16 @@ function Clustergrammer() {
 
   useEffect(() => {
     if (!containerRef1.current) return;
-    cgl(getArgs(containerRef1.current, cytofData));
+    cgl(getArgs(containerRef1.current, cytofData, {  }));
   }, [containerRef1]);
 
 
   useEffect(() => {
     if (!containerRef2.current) return;
-    cgl(getArgs(containerRef2.current, multViewData));
+    cgl(getArgs(containerRef2.current, multViewData, { matrixColors: {
+      pos: [0, 255, 0],
+      neg: [255, 0, 255]
+    } }));
   }, [containerRef2]);
 
   return (

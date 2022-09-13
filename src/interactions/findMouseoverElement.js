@@ -1,9 +1,10 @@
 import { cloneDeep } from "lodash";
 import * as _ from "underscore";
-import calcCatClusterBreakdown from "../cats/functions/calcCatClusterBreakdown";
+import { TOOLTIP_TYPES } from "../tooltip/tooltip.const";
 import getMouseoverType from "./getMouseoverType";
+import { setTooltipText } from "./setTooltipText";
 
-export default function findMouseoverElement(store, ev) {
+export default function findMouseoverElement(store, catArgsManager, ev) {
   const dispatch = store.dispatch;
 
   /*
@@ -54,7 +55,7 @@ export default function findMouseoverElement(store, ev) {
   });
   // write zoom data changes
   dispatch(store.actions.mutateZoomData(updatedZoomData));
-  getMouseoverType(store);
+  getMouseoverType(store, catArgsManager);
   const {
     tooltip: { tooltip_type, in_bounds_tooltip },
   } = store.selectAll();
@@ -62,13 +63,13 @@ export default function findMouseoverElement(store, ev) {
   if (in_bounds_tooltip) {
     let axis_index;
     let inst_dims = [];
-    if (tooltip_type === "matrix-cell") {
+    if (tooltip_type === TOOLTIP_TYPES.MATRIX_CELL) {
       inst_dims = ["row", "col"];
     } else if (tooltip_type.indexOf("row") >= 0) {
       inst_dims = ["row"];
     } else if (tooltip_type.indexOf("col") >= 0) {
       inst_dims = ["col"];
-      const newVizData = store.select("visualization;");
+      const newVizData = store.select("visualization");
       // shift found column label to reflect slanted column labels
       // /////////////////////////////////////////////////////////////
       // the shift is equal to the height above the column labels
@@ -118,7 +119,7 @@ export default function findMouseoverElement(store, ev) {
         mouseover[inst_axis].cats[cat_index] = inst_cat_name;
       });
     });
-    if (tooltip_type === "matrix-cell") {
+    if (tooltip_type === TOOLTIP_TYPES.MATRIX_CELL) {
       mouseover.value =
         store.select("network").mat?.[axis_indices.row]?.[axis_indices.col] ||
         NaN;
@@ -126,14 +127,14 @@ export default function findMouseoverElement(store, ev) {
   }
   const dendro = store.select("dendro");
   if (tooltip_type.indexOf("dendro") >= 0) {
-    if (tooltip_type === "row-dendro") {
+    if (tooltip_type === TOOLTIP_TYPES.ROW_DENDRO) {
       _.each(dendro.group_info.row, function (i_group) {
         if (i_group.all_names.includes(mouseover.row.name)) {
           mouseover.row.dendro = i_group;
         }
       });
     }
-    if (tooltip_type === "col-dendro") {
+    if (tooltip_type === TOOLTIP_TYPES.COL_DENDRO) {
       _.each(dendro.group_info.col, function (i_group) {
         if (i_group.all_names.includes(mouseover.col.name)) {
           mouseover.col.dendro = i_group;
@@ -146,42 +147,4 @@ export default function findMouseoverElement(store, ev) {
   setTooltipText(store, mouseover);
 
   dispatch(store.actions.setMouseoverInteraction(mouseover));
-}
-
-function setTooltipText(store, mouseover) {
-  const {
-    tooltip: { tooltip_type },
-  } = store.selectAll();
-  let tooltip_text = "";
-  if (tooltip_type === "matrix-cell") {
-    tooltip_text = `Row: ${mouseover.row.name}\nCol: ${
-      mouseover.col.name
-    }\nValue: ${mouseover.value?.toFixed(3) || "NaN"}${
-      mouseover.value_iz
-        ? `Original value: ${mouseover.value_iz.toFixed(3)}`
-        : ""
-    }`;
-  } else if (tooltip_type === "row-label") {
-    tooltip_text = mouseover.row.name;
-  } else if (tooltip_type === "col-label") {
-    tooltip_text = mouseover.col.name;
-    // TODO: fix dendro tooltips
-  } else if (tooltip_type === "col-dendro") {
-    // tooltip_text = JSON.stringify(mouseover.col.dendro);
-    const { selected_clust_names } = calcCatClusterBreakdown(
-      store,
-      mouseover.col.dendro,
-      "col"
-    );
-    tooltip_text = selected_clust_names;
-  } else if (tooltip_type === "row-dendro") {
-    tooltip_text = JSON.stringify(mouseover.row.dendro);
-  } else if (tooltip_type.indexOf("-cat-") > 0) {
-    // Category Tooltip
-    // ///////////////////
-    const inst_axis = tooltip_type.split("-")[0];
-    const inst_index = tooltip_type.split("-")[2];
-    tooltip_text = mouseover[inst_axis].cats[inst_index];
-  }
-  store.dispatch(store.actions.mutateTooltipState({ text: tooltip_text }));
 }

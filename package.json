@@ -1,6 +1,6 @@
 {
   "name": "@gumuslab/clustergrammer",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "description": "Clustergrammer with WebGL and regl for Javascript",
   "exports": "./dist/index.js",
   "main": "./dist/index.js",

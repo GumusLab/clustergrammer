@@ -3,12 +3,14 @@ import { Regl } from "regl";
 import { CamerasManager } from "./cameras/camerasManager";
 import { CatArgsManager } from "./cats/manager/catArgsManager";
 import draw_webgl_layers from "./draws/drawWebglLayers";
+import type {
+  ClustergrammerInstance,
+  ClustergrammerProps,
+} from "./index.types";
 import recluster from "./recluster/recluster";
 import runReorder from "./reorders/runReorder";
 import initializeRegl from "./state/initialize/functions/initializeRegl";
 import initializeStore from "./state/initialize/initializeStore";
-import { NetworkState } from "./state/reducers/networkSlice";
-import { TooltipState } from "./state/reducers/tooltip/tooltipSlice";
 import { createStore, NamespacedStore } from "./state/store/store";
 import { createCanvasContainer } from "./ui/functions/createCanvasContainer";
 import { UI } from "./ui/ui";
@@ -68,14 +70,7 @@ const adjustOpacity =
 function clustergrammer_gl(
   args: ClustergrammerProps
 ): ClustergrammerInstance | null {
-  const {
-    container,
-    showControls = true,
-    showDendroSliders = true,
-    width,
-    height,
-    onClick,
-  } = args;
+  const { container, onClick } = args;
 
   // check if container is defined
   if (
@@ -83,7 +78,7 @@ function clustergrammer_gl(
     select(container).select(`.${CANVAS_CONTAINER_CLASSNAME}`).empty()
   ) {
     // create a container for the webGL canvas
-    const canvas_container = createCanvasContainer(container, width, height);
+    const canvas_container = createCanvasContainer(args);
 
     // initialize REGL manager
     // NOTE: this must be done before anything else,
@@ -108,11 +103,7 @@ function clustergrammer_gl(
       store,
       camerasManager,
       catArgsManager,
-      container,
-      vizWidth: width,
-      vizHeight: height,
-      showControls,
-      showDendroSliders,
+      args,
     });
 
     // zoom rules

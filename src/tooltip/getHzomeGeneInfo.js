@@ -16,7 +16,7 @@ function setTooltip(tooltip_id, data, gene_symbol) {
   }
 }
 
-function get_request(dispatch, ini_gene_symbol) {
+function get_request(store, ini_gene_symbol) {
   let gene_symbol;
   if (ini_gene_symbol.indexOf(" ") > 0) {
     gene_symbol = ini_gene_symbol.split(" ")[0];
@@ -37,7 +37,7 @@ function get_request(dispatch, ini_gene_symbol) {
         name: response.data.name,
         description: response.data.description,
       };
-      dispatch(
+      store.dispatch(
         store.actions.mutateHzomeGeneData({ [gene_symbol]: newGeneData })
       );
     })
@@ -51,6 +51,6 @@ export function getHzomeGeneInfo(store, gene_symbol) {
     const inst_data = store.select("hzome").gene_data[gene_symbol];
     setTooltip(store.select("tooltip").tooltip_id, inst_data, gene_symbol);
   } else {
-    get_request(store.dispatch, gene_symbol);
+    get_request(store, gene_symbol);
   }
 }

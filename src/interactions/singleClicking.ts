@@ -1,5 +1,6 @@
-import { OnClickCallback } from "..";
+import { OnClickCallback } from "../index.types";
 import { NamespacedStore } from "../state/store/store";
+import { TOOLTIP_TYPES } from "../tooltip/tooltip.const";
 
 export default function singleClicking(
   store: NamespacedStore,
@@ -16,7 +17,7 @@ export default function singleClicking(
   const tooltipType = store.select("tooltip").tooltip_type;
 
   // onClick callback
-  if (onClick && tooltipType && tooltipType !== "out-of-bounds") {
+  if (onClick && tooltipType && tooltipType !== TOOLTIP_TYPES.OOB) {
     // TODO: replace tooltip type strings with enum
     const mouseover = store.select("interaction").mouseover;
     onClick({

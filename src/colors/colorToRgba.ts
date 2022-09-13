@@ -1,6 +1,6 @@
 import color_table from "../constants/colorTable";
 
-export default (function color_to_rgbs(
+export default (function color_to_rgba(
   hex_or_name: string | undefined,
   alpha = 1.0
 ) {

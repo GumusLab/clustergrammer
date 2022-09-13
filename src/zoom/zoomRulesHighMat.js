@@ -21,7 +21,7 @@ export default function zoom_rules_high_mat(
     element: element,
   })
     .on("interaction", function (ev) {
-      track_interaction_zoom_data(store, ev);
+      track_interaction_zoom_data(store, catArgsManager, ev);
       // run_hide_tooltip(store, tooltip_fun);
     })
     .on("interactionend", function () {

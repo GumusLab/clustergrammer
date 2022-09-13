@@ -172,6 +172,7 @@ export default (function makeCatArgs(
       attribute vec2 cat_pos_att_new;
       uniform float interp_uni;
       uniform bool run_animation;
+      uniform float cat_width;
 
 
       uniform mat3 mat_rotate;
@@ -256,6 +257,7 @@ export default (function makeCatArgs(
       },
     },
     uniforms: {
+      cat_width,
       zoom: zoom_function,
       mat_rotate: mat_rotate,
       scale_y: scale_y,

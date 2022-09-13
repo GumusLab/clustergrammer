@@ -1,4 +1,5 @@
 import { cloneDeep } from "lodash";
+import { CatArgsManager } from "../cats/manager/catArgsManager";
 import { NamespacedStore } from "../state/store/store";
 import { InteractionEvent } from "../types/general";
 import zoom_rules_low_mat from "../zoom/zoomRulesLowMat";
@@ -7,6 +8,7 @@ import keepTrackOfInteractions from "./keepTrackOfInteractions";
 
 export default (function track_interaction_zoom_data(
   store: NamespacedStore,
+  catArgsManager: CatArgsManager,
   ev: InteractionEvent
 ) {
   const dispatch = store.dispatch;
@@ -62,6 +64,6 @@ export default (function track_interaction_zoom_data(
     keepTrackOfInteractions(store);
   } else if (ev.type === "mousemove") {
     // trying to keep track of interactions for mouseovers
-    findMouseoverElement(store, ev);
+    findMouseoverElement(store, catArgsManager, ev);
   }
 });

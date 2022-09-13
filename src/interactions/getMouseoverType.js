@@ -1,21 +1,51 @@
-export default (function getMouseoverType(store) {
+import { TOOLTIP_TYPES } from "../tooltip/tooltip.const";
+import { CANVAS_CONTAINER_CLASSNAME } from "../ui/ui.const";
+
+const LABEL_SIZE = 125;
+const DENDRO_WIDTH = 15;
+
+export default (function getMouseoverType(store, catArgsManager) {
   // return vars
   let in_bounds_tooltip = false;
-  let tooltip_type = "out-of-bounds";
-  // switch to using absolute cursor position to determine mouseover type
-  // emperically found pixel parameters
-  // cats are ~12px wide
-  const cat_width = 12;
+  let tooltip_type = TOOLTIP_TYPES.OOB;
+
+  const canvas = document.querySelector(
+    `${
+      store.select("visualization").rootElementId
+    } .${CANVAS_CONTAINER_CLASSNAME} canvas`
+  );
+  const canvasWidth = parseFloat(canvas.style.width.replace("px", ""));
+  const canvasHeight = parseFloat(canvas.style.height.replace("px", ""));
+
+  const vizDim = store.select("visualization").viz_dim;
+  const heatSizeX = vizDim.heat_size.x;
+  const heatSizeY = vizDim.heat_size.y;
+
+  // size of categories, equal to one pixel padding from label, the height of a category
+  // times the number of categories, plus a pixel of padding below/to the right of each category
+  const catArgs = catArgsManager.getCatArgs();
+  const catSizeX = catArgs?.row?.length
+    ? catArgs?.row?.[0]?.uniforms.cat_width * catArgs?.row?.length +
+      catArgs?.row?.length +
+      1
+    : 0;
+  const catSizeY = catArgs?.col?.length
+    ? catArgs?.col?.[0]?.uniforms.cat_width * catArgs?.col?.length +
+      catArgs?.col?.length +
+      1
+    : 0;
+
   const edim = {};
   edim.x = {};
-  edim.x.heat_min = 125 + cat_width * store.select("cat_data").row.length;
-  edim.x.dendro_start = 750;
-  edim.x.dendro_end = 800;
+  const heatmapWidth = heatSizeX * canvasWidth;
+  edim.x.heat_min = LABEL_SIZE + catSizeX;
+  edim.x.dendro_start = edim.x.heat_min + heatmapWidth - 1;
+  edim.x.dendro_end = edim.x.dendro_start + DENDRO_WIDTH + 1;
   edim.y = {};
-  // extra pixel prevents error *********** look into
-  edim.y.heat_min = 126 + cat_width * store.select("cat_data").col.length;
-  edim.y.dendro_start = 845;
-  edim.y.dendro_end = 860;
+  const heatmapHeight = heatSizeY * canvasHeight;
+  edim.y.heat_min = LABEL_SIZE + catSizeY;
+  edim.y.dendro_start = edim.y.heat_min + heatmapHeight - 1;
+  edim.y.dendro_end = edim.y.dendro_start + DENDRO_WIDTH + 1;
   const inst_pix = {};
   inst_pix.x = store.select("visualization").zoom_data.x.cursor_position;
   inst_pix.y = store.select("visualization").zoom_data.y.cursor_position;
@@ -27,7 +57,7 @@ export default (function getMouseoverType(store) {
     inst_pix.y < edim.y.dendro_start
   ) {
     in_bounds_tooltip = true;
-    tooltip_type = "matrix-cell";
+    tooltip_type = TOOLTIP_TYPES.MATRIX_CELL;
   } else if (
     inst_pix.x <= edim.x.heat_min &&
     inst_pix.y > edim.y.heat_min &&
@@ -35,16 +65,16 @@ export default (function getMouseoverType(store) {
   ) {
     in_bounds_tooltip = true;
     if (store.select("cat_data").row.length > 0) {
-      cat_index = Math.floor((edim.x.heat_min - inst_pix.x) / cat_width);
+      cat_index = Math.floor((edim.x.heat_min - inst_pix.x) / catSizeX);
       if (cat_index + 1 <= store.select("cat_data").row.length) {
         tooltip_type =
           "row-cat-" +
           String(store.select("cat_data").row.length - cat_index - 1);
       } else {
-        tooltip_type = "row-label";
+        tooltip_type = TOOLTIP_TYPES.ROW_LABEL;
       }
     } else {
-      tooltip_type = "row-label";
+      tooltip_type = TOOLTIP_TYPES.ROW_LABEL;
     }
   } else if (
     inst_pix.y <= edim.y.heat_min &&
@@ -53,16 +83,16 @@ export default (function getMouseoverType(store) {
   ) {
     in_bounds_tooltip = true;
     if (store.select("cat_data").col.length > 0) {
-      cat_index = Math.floor((edim.y.heat_min - inst_pix.y) / cat_width);
+      cat_index = Math.floor((edim.y.heat_min - inst_pix.y) / catSizeY);
       if (cat_index + 1 <= store.select("cat_data").col.length) {
         tooltip_type =
           "col-cat-" +
           String(store.select("cat_data").col.length - cat_index - 1);
       } else {
-        tooltip_type = "col-label";
+        tooltip_type = TOOLTIP_TYPES.COL_LABEL;
       }
     } else {
-      tooltip_type = "col-label";
+      tooltip_type = TOOLTIP_TYPES.COL_LABEL;
     }
   } else if (
     inst_pix.x >= edim.x.dendro_start &&
@@ -71,7 +101,7 @@ export default (function getMouseoverType(store) {
     inst_pix.y < edim.y.dendro_start
   ) {
     if (store.select("order").inst.row === "clust") {
-      tooltip_type = "row-dendro";
+      tooltip_type = TOOLTIP_TYPES.ROW_DENDRO;
       in_bounds_tooltip = true;
     }
   } else if (
@@ -81,7 +111,7 @@ export default (function getMouseoverType(store) {
     inst_pix.x < edim.x.dendro_start
   ) {
     if (store.select("order").inst.col === "clust") {
-      tooltip_type = "col-dendro";
+      tooltip_type = TOOLTIP_TYPES.COL_DENDRO;
       in_bounds_tooltip = true;
     }
   }
