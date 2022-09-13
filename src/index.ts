@@ -134,7 +134,7 @@ function clustergrammer_gl(
         },
       },
       utils: {
-        highlight: updateSearchedRows(regl, store, catArgsManager, camerasManager), // TODO: implement
+        highlight: updateSearchedRows(regl, store, catArgsManager, camerasManager),
       },
       functions: {
         recluster: (distance_metric: string, linkage_type: string) => {
