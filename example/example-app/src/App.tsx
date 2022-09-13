@@ -24,12 +24,7 @@ function Clustergrammer() {
 
   useEffect(() => {
     if (!containerRef1.current) return;
-    // @ts-ignore
-    const temp = cgl(getArgs(containerRef1.current, cytofData));
-    if (window.test == null) {
-      // @ts-ignore
-      window.test = temp;
-    }
+    cgl(getArgs(containerRef1.current, cytofData));
   }, [containerRef1]);
 
 

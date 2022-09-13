@@ -1,5 +1,4 @@
 import { select } from "d3-selection";
-import { noop } from "lodash";
 import { Regl } from "regl";
 import { CamerasManager } from "./cameras/camerasManager";
 import { CatArgsManager } from "./cats/manager/catArgsManager";
@@ -41,6 +40,18 @@ export type ClustergrammerProps = {
   enabledTooltips?: Array<"dendro" | "cat" | "cell" | "label" | string>;
   labelLength?: number;
 };
+
+const updateSearchedRows = 
+  (
+    regl: Regl,
+    store: NamespacedStore,
+    catArgsManager: CatArgsManager,
+    camerasManager: CamerasManager
+  )  => 
+  (rows: string[]) => {
+    store.dispatch(store.actions.setSearchedRows(rows));
+    draw_webgl_layers(regl, store, catArgsManager, camerasManager);
+}
 
 const adjustOpacity =
   (
@@ -123,7 +134,7 @@ function clustergrammer_gl(
         },
       },
       utils: {
-        highlight: noop, // TODO: implement
+        highlight: updateSearchedRows(regl, store, catArgsManager, camerasManager), // TODO: implement
       },
       functions: {
         recluster: (distance_metric: string, linkage_type: string) => {
