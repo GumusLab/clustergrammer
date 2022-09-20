@@ -3,6 +3,7 @@ import { Regl } from "regl";
 import { CamerasManager } from "./cameras/camerasManager";
 import { CatArgsManager } from "./cats/manager/catArgsManager";
 import draw_webgl_layers from "./draws/drawWebglLayers";
+import make_matrix_args from "./matrixCells/makeMatrixArgs";
 import recluster from "./recluster/recluster";
 import runReorder from "./reorders/runReorder";
 import initializeRegl from "./state/initialize/functions/initializeRegl";
@@ -52,6 +53,21 @@ const updateSearchedRows =
     store.dispatch(store.actions.setSearchedRows(rows));
     draw_webgl_layers(regl, store, catArgsManager, camerasManager);
 }
+
+const updateSearchedHightlights = 
+  (
+    regl: Regl,
+    store: NamespacedStore,
+    catArgsManager: CatArgsManager,
+    camerasManager: CamerasManager
+  )  =>
+  (rows?: string[], cols?: string[]) => {
+    store.dispatch(store.actions.setHighlightedRows(rows || []));
+    store.dispatch(store.actions.setHighlightedCols(cols || []));
+    const newProp = make_matrix_args(regl, store);
+    camerasManager.mutateReglProps(newProp);
+    draw_webgl_layers(regl, store, catArgsManager, camerasManager);
+  }
 
 const adjustOpacity =
   (
@@ -134,7 +150,8 @@ function clustergrammer_gl(
         },
       },
       utils: {
-        highlight: updateSearchedRows(regl, store, catArgsManager, camerasManager),
+        highlightTriangles: updateSearchedRows(regl, store, catArgsManager, camerasManager),
+        hightlightRowsCols: updateSearchedHightlights(regl, store, catArgsManager, camerasManager),
       },
       functions: {
         recluster: (distance_metric: string, linkage_type: string) => {
