@@ -40,8 +40,7 @@ const updateSearchedHightlights =
   (rows?: string[], cols?: string[]) => {
     store.dispatch(store.actions.setHighlightedRows(rows || []));
     store.dispatch(store.actions.setHighlightedCols(cols || []));
-    const newProp = make_matrix_args(regl, store);
-    camerasManager.mutateReglProps(newProp);
+    camerasManager.remakeMatrixArgs();
     draw_webgl_layers(regl, store, catArgsManager, camerasManager);
   }
 
