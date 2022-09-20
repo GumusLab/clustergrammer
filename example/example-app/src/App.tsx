@@ -24,7 +24,10 @@ function Clustergrammer() {
 
   useEffect(() => {
     if (!containerRef1.current) return;
-    cgl(getArgs(containerRef1.current, cytofData));
+    // @ts-ignore
+    const temp = cgl(getArgs(containerRef1.current, cytofData));
+    // @ts-ignore
+    if (temp) window.test = temp;
   }, [containerRef1]);
 
 
