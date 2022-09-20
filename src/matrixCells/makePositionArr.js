@@ -20,8 +20,9 @@ export default (function make_position_arr(
     return [col_pos, row_pos];
   }
   // generate new array with position elements
-  const pos_arr = Array(num_row * num_col)
-    .fill()
-    .map(position_function);
-  return pos_arr;
+  const pos_dict = {};
+  for (let i = 0; i < num_col * num_row; i++) {
+    pos_dict[`${row_nodes[Math.floor(i / num_col)].name}, ${col_nodes[i % num_col].name}`] = position_function(null, i);
+  }
+  return pos_dict;
 });
