@@ -17,7 +17,7 @@ export default (function reorderMatrixArgs(
   camerasManager.mutateReglProps({
     attributes: {
       pos_att_new: {
-        buffer: regl.buffer(newPositionArray),
+        buffer: regl.buffer(Object.values(newPositionArray.pos_dict)),
         divisor: 1,
       },
     },

@@ -14,35 +14,40 @@ export default function make_matrix_args(regl, store) {
   arrs.opacity_arr = make_opacity_arr(store);
   arrs.mask_arr = new Array(arrs.opacity_arr.length).fill(0.0);
 
-  const ini_dict = make_position_arr(
+  const {
+    pos_dict,
+  } = make_position_arr(
     store,
     store.select("order").inst.row,
     store.select("order").inst.col
   );
-  const new_dict = make_position_arr(
+  const {
+    pos_dict: new_pos_dict,
+    row_dict: new_row_dict,
+    col_dict: new_col_dict,
+  } = make_position_arr(
     store,
     store.select("order").new.row,
     store.select("order").new.col
   );
+
   arrs.position_arr = {};
-  arrs.position_arr.ini = Object.values(ini_dict);
-  arrs.position_arr.new = Object.values(new_dict);
+  arrs.position_arr.ini = Object.values(pos_dict);
+  arrs.position_arr.new = Object.values(new_pos_dict);
 
   for (let i = 0; i < highlighted_cols.length; i++) {
-    if (highlighted_cols[i].length == 0) continue
-    for (let j = 0; j < highlighted_rows.length; j++) {
-      if (highlighted_rows[j].length == 0) continue
-      const targetNode = new_dict[`${row_nodes[0].name}, ${col_nodes[0].name}`];
+    const col = highlighted_cols[i];
+    const col_nodes = new_col_dict[col] || [];
+    for (let j = 0; j < col_nodes.length; j++) {
+      arrs.mask_arr[col_nodes[j]] += .3;
+    }
+  }
 
-      for (let i = 0; i < arrs.mask_arr.length; i++) {
-        if (arrs.position_arr.new[i][0] === targetNode[0]) {
-          arrs.mask_arr[i] += 0.3;
-        }
-        if (arrs.position_arr.new[i][1] === targetNode[1]) {
-          arrs.mask_arr[i] += 0.3;
-        }
-        arrs.mask_arr[i] = Math.min(arrs.mask_arr[i], 1.0);
-      }
+  for (let i = 0; i < highlighted_rows.length; i++) {
+    const row = highlighted_rows[i];
+    const row_nodes = new_row_dict[row] || [];
+    for (let j = 0; j < row_nodes.length; j++) {
+      arrs.mask_arr[row_nodes[j]] += .3;
     }
   }
 
@@ -118,8 +123,8 @@ export default function make_matrix_args(regl, store) {
       if (mask_vary == 0.3) {
         gl_FragColor = vec4(1.0, 1.0, 0.0, min(1.0, intensity_vary + 0.3));
       }
-      if (mask_vary > 0.4) {
-        gl_FragColor = vec4(1.0, 0.0, 0.0, min(1.0, intensity_vary + 0.5));
+      if (mask_vary > 0.3) {
+        gl_FragColor = vec4(1.0, 0.647, 0.0, 1.0);
       }
 
     }`;
