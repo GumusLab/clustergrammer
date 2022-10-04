@@ -19,7 +19,7 @@ const getArgs = (container: HTMLElement, data: any, otherProps: Partial<Clusterg
       show: true,
       height: "25%",
       side: "right",
-    }
+    },
     ...otherProps,
   }
 }
