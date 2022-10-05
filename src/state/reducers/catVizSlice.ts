@@ -46,15 +46,13 @@ export const catVizSlice = (id: string) =>
     // The `reducers` field lets us define reducers and generate associated actions
     reducers: {
       setCatVizState: (state, action: PayloadAction<CatVizState>) => {
-        state = action.payload;
-        return state;
+        return action.payload;
       },
       mutateCatVizState: (
         state,
         action: PayloadAction<Partial<CatVizState>>
       ) => {
-        state = merge(state, action.payload);
-        return state;
+        return merge(state, action.payload);
       },
     },
   });

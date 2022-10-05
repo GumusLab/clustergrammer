@@ -67,29 +67,25 @@ export const labelsSlice = (id: string) =>
     // The `reducers` field lets us define reducers and generate associated actions
     reducers: {
       setLabelsState: (state, action: PayloadAction<LabelsState>) => {
-        state = action.payload;
-        return state;
+        return action.payload;
       },
       mutateLabelsState: (
         state,
         action: PayloadAction<Partial<LabelsState>>
       ) => {
-        state = merge(state, action.payload);
-        return state;
+        return merge(state, action.payload);
       },
       setLabelsOffsetDict: (
         state,
         action: PayloadAction<LabelsState["offset_dict"]>
       ) => {
         state.offset_dict = action.payload;
-        return state;
       },
       setLabelsQueue: (
         state,
         action: PayloadAction<LabelsState["labels_queue"]>
       ) => {
         state.labels_queue = action.payload;
-        return state;
       },
       pushHighQueueLabel: (
         state,

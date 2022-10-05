@@ -50,15 +50,13 @@ export const networkSlice = (id: string) =>
     // The `reducers` field lets us define reducers and generate associated actions
     reducers: {
       setNetworkState: (state, action: PayloadAction<NetworkState>) => {
-        state = action.payload;
-        return state;
+        return action.payload;
       },
       mutateNetworkState: (
         state,
         action: PayloadAction<Partial<NetworkState>>
       ) => {
-        state = merge(state, action.payload);
-        return state;
+        return merge(state, action.payload);
       },
     },
   });

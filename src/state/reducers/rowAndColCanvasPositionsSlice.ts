@@ -17,8 +17,7 @@ export const rowAndColCanvasPositionsSlice = (id: string) =>
         state,
         action: PayloadAction<RowAndColCanvasPositions>
       ) => {
-        state = action.payload;
-        return state;
+        return action.payload;
       },
     },
   });

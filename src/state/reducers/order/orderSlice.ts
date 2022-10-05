@@ -22,12 +22,10 @@ export const orderSlice = (id: string) =>
     // The `reducers` field lets us define reducers and generate associated actions
     reducers: {
       setOrderState: (state, action: PayloadAction<OrderState>) => {
-        state = action.payload;
-        return state;
+        return action.payload;
       },
       mutateOrderState: (state, action: PayloadAction<Partial<OrderState>>) => {
-        state = merge(state, action.payload);
-        return state;
+        return merge(state, action.payload);
       },
     },
   });

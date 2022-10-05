@@ -149,40 +149,34 @@ export const visualizationSlice = (id: string) =>
         state,
         action: PayloadAction<VisualizationState>
       ) => {
-        state = action.payload;
-        return state;
+        return action.payload;
       },
       mutateVisualizationState: (
         state,
         action: PayloadAction<Partial<VisualizationState>>
       ) => {
-        state = merge(state, action.payload);
-        return state;
+        return merge(state, action.payload);
       },
       mutateZoomData: (
         state,
         action: PayloadAction<Partial<VisualizationState["zoom_data"]>>
       ) => {
         state.zoom_data = merge(state.zoom_data, action.payload);
-        return state;
       },
       setZoomData: (
         state,
         action: PayloadAction<VisualizationState["zoom_data"]>
       ) => {
         state.zoom_data = action.payload;
-        return state;
       },
       setVisualizationDimensions: (
         state,
         action: PayloadAction<VisualizationState["viz_dim"]>
       ) => {
         state.viz_dim = action.payload;
-        return state;
       },
       setTotalMouseover: (state, action: PayloadAction<number>) => {
         state.total_mouseover = action.payload;
-        return state;
       },
     },
   });

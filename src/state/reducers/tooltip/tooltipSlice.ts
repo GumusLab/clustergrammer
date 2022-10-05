@@ -33,15 +33,13 @@ export const tooltipSlice = (id: string) =>
     // The `reducers` field lets us define reducers and generate associated actions
     reducers: {
       setTooltipState: (state, action: PayloadAction<TooltipState>) => {
-        state = action.payload;
-        return state;
+        return action.payload;
       },
       mutateTooltipState: (
         state,
         action: PayloadAction<Partial<TooltipState>>
       ) => {
-        state = merge(state, action.payload);
-        return state;
+        return merge(state, action.payload);
       },
     },
   });

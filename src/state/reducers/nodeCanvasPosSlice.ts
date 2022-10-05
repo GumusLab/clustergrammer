@@ -14,8 +14,7 @@ export const nodeCanvasPosSlice = (id: string) =>
     // The `reducers` field lets us define reducers and generate associated actions
     reducers: {
       setNodeCanvasPos: (state, action: PayloadAction<NodeCanvasPos>) => {
-        state = action.payload;
-        return state;
+        return action.payload;
       },
     },
   });

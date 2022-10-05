@@ -22,7 +22,6 @@ export const hzomeSlice = (id: string) =>
     reducers: {
       mutateHzomeGeneData: (state, action: PayloadAction<HzomeState>) => {
         state.gene_data = merge(state.gene_data, action.payload);
-        return state;
       },
     },
   });

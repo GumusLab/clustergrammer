@@ -18,12 +18,10 @@ export const arrsSlice = (id: string) =>
     // The `reducers` field lets us define reducers and generate associated actions
     reducers: {
       setArrsState: (state, action: PayloadAction<ArrsState>) => {
-        state = action.payload;
-        return state;
+        return action.payload;
       },
       mutateArrsState: (state, action: PayloadAction<Partial<ArrsState>>) => {
-        state = merge(state, action.payload);
-        return state;
+        return merge(state, action.payload);
       },
     },
   });

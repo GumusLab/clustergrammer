@@ -32,7 +32,6 @@ export const downloadSlice = (id: string) =>
         action: PayloadAction<DownloadState["delimiter_name"]>
       ) => {
         state.delimiter_name = action.payload;
-        return state;
       },
     },
   });

@@ -30,22 +30,19 @@ export const matrixSlice = (id: string) =>
     // The `reducers` field lets us define reducers and generate associated actions
     reducers: {
       setMatrixState: (state, action: PayloadAction<MatrixState>) => {
-        state = action.payload;
-        return state;
+        return action.payload;
       },
       mutateMatrixState: (
         state,
         action: PayloadAction<Partial<MatrixState>>
       ) => {
-        state = merge(state, action.payload);
-        return state;
+        return merge(state, action.payload);
       },
       setOpacityScale: (
         state,
         action: PayloadAction<MatrixState["opacity_scale"]>
       ) => {
         state.opacity_scale = action.payload;
-        return state;
       },
     },
   });

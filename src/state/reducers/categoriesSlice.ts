@@ -38,15 +38,13 @@ export const categoriesSlice = (id: string) =>
     // The `reducers` field lets us define reducers and generate associated actions
     reducers: {
       setCategoriesState: (state, action: PayloadAction<CategoriesState>) => {
-        state = action.payload;
-        return state;
+        return action.payload;
       },
       mutateCategoriesState: (
         state,
         action: PayloadAction<Partial<CategoriesState>>
       ) => {
-        state = merge(state, action.payload);
-        return state;
+        return merge(state, action.payload);
       },
     },
   });
