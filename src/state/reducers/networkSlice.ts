@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { merge } from "lodash";
+import { produce } from "immer";
 import { NetworkData, Ordering } from "../../types/network";
 
 export type NormScoring = "zscored" | "non-zscored";
@@ -56,7 +57,9 @@ export const networkSlice = (id: string) =>
         state,
         action: PayloadAction<Partial<NetworkState>>
       ) => {
-        return merge(state, action.payload);
+        return produce(state, (draftState) => {
+          merge(draftState, action.payload);
+        });
       },
     },
   });

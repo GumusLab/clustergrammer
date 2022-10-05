@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { merge } from "lodash";
+import { produce } from "immer";
 import getInitialInteractionState from "./getInitialInteractionState";
 
 export interface InteractionState {
@@ -38,7 +39,9 @@ export const interactionSlice = (id: string) =>
         state,
         action: PayloadAction<Partial<InteractionState>>
       ) => {
-        return merge(state, action.payload);
+        return produce(state, (draftState) => {
+          merge(draftState, action.payload);
+        });
       },
       setMouseoverInteraction: (
         state,

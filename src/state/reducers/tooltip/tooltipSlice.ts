@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { merge } from "lodash";
+import { produce } from "immer";
 import getInitialTooltipState from "./getInitialTooltipState";
 
 export interface TooltipState {
@@ -39,7 +40,9 @@ export const tooltipSlice = (id: string) =>
         state,
         action: PayloadAction<Partial<TooltipState>>
       ) => {
-        return merge(state, action.payload);
+        return produce(state, (draftState) => {
+          merge(draftState, action.payload);
+        });
       },
     },
   });

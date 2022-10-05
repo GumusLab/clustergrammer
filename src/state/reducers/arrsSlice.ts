@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { merge } from "lodash";
+import { produce } from "immer";
 
 export interface ArrsState {
   opacity_arr: any[];
@@ -21,7 +22,9 @@ export const arrsSlice = (id: string) =>
         return action.payload;
       },
       mutateArrsState: (state, action: PayloadAction<Partial<ArrsState>>) => {
-        return merge(state, action.payload);
+        return produce(state, (draftState) => {
+          merge(draftState, action.payload);
+        });
       },
     },
   });

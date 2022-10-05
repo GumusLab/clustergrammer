@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { merge } from "lodash";
+import { produce } from "immer";
 
 export type CurrentPanel = "reorder" | "recluster";
 
@@ -52,7 +53,9 @@ export const catVizSlice = (id: string) =>
         state,
         action: PayloadAction<Partial<CatVizState>>
       ) => {
-        return merge(state, action.payload);
+        return produce(state, (draftState) => {
+          merge(draftState, action.payload);
+        });
       },
     },
   });

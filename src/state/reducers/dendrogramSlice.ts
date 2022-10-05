@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { merge } from "lodash";
+import { produce } from "immer";
 
 type TriangleInfo = {
   [x: string]: {
@@ -57,7 +58,9 @@ export const dendrogramSlice = (id: string) =>
         state,
         action: PayloadAction<Partial<DendrogramState>>
       ) => {
-        return merge(state, action.payload);
+        return produce(state, (draftState) => {
+          merge(draftState, action.payload);
+        });
       },
     },
   });

@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { merge } from "lodash";
+import { produce } from "immer";
 import { Ordering } from "../../../types/network";
 
 type AxisOrdering = {
@@ -25,7 +26,9 @@ export const orderSlice = (id: string) =>
         return action.payload;
       },
       mutateOrderState: (state, action: PayloadAction<Partial<OrderState>>) => {
-        return merge(state, action.payload);
+        return produce(state, (draftState) => {
+          merge(draftState, action.payload);
+        });
       },
     },
   });

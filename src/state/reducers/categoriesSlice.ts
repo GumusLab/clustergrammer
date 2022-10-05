@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { merge } from "lodash";
+import { produce } from "immer";
 
 export type CatRoom = {
   webgl: number;
@@ -44,7 +45,9 @@ export const categoriesSlice = (id: string) =>
         state,
         action: PayloadAction<Partial<CategoriesState>>
       ) => {
-        return merge(state, action.payload);
+        return produce(state, (draftState) => {
+          merge(draftState, action.payload);
+        });
       },
     },
   });

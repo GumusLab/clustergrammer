@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { merge } from "lodash";
+import { produce } from "immer";
 import iniZoomData from "./helpers/iniZoomData";
 
 export type TextZoom = {
@@ -155,13 +156,17 @@ export const visualizationSlice = (id: string) =>
         state,
         action: PayloadAction<Partial<VisualizationState>>
       ) => {
-        return merge(state, action.payload);
+        return produce(state, (draftState) => {
+          merge(draftState, action.payload);
+        });
       },
       mutateZoomData: (
         state,
         action: PayloadAction<Partial<VisualizationState["zoom_data"]>>
       ) => {
-        state.zoom_data = merge(state.zoom_data, action.payload);
+        state.zoom_data = produce(state.zoom_data, (draftState) => {
+          merge(draftState, action.payload);
+        });
       },
       setZoomData: (
         state,
