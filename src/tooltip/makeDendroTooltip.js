@@ -81,7 +81,6 @@ export default (function make_dendro_tooltip(
     .style("display", "inline-block")
     .style("cursor", "default")
     .on("click", (d) => {
-      const state = store.selectAll();
       dispatch(store.actions.mutateDendrogramState({ output_label_format: d }));
       selectAll(
         store.select("tooltip").tooltip_id +

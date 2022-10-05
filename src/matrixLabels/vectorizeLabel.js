@@ -1,6 +1,11 @@
 import vectorize_text from "vectorize-text";
 
-export default function vectorize_label(fontDetails, inst_axis, inst_name, async=true) {
+export default function vectorize_label(
+  fontDetails,
+  inst_axis,
+  inst_name,
+  async = true
+) {
   const vect_text_attrs = {
     textAlign: "left",
     triangles: true,

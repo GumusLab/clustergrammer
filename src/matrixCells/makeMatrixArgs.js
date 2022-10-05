@@ -5,18 +5,11 @@ import make_position_arr from "./makePositionArr";
 export default function make_matrix_args(regl, store) {
   // make arrays
   const arrs = {};
-  const row_nodes = store.select("network").row_nodes;
-  const col_nodes = store.select("network").col_nodes;
-  const {
-    highlighted_cols,
-    highlighted_rows,
-  } = store.select("search");
+  const { highlighted_cols, highlighted_rows } = store.select("search");
   arrs.opacity_arr = make_opacity_arr(store);
   arrs.mask_arr = new Array(arrs.opacity_arr.length).fill(0.0);
 
-  const {
-    pos_dict,
-  } = make_position_arr(
+  const { pos_dict } = make_position_arr(
     store,
     store.select("order").inst.row,
     store.select("order").inst.col
@@ -39,7 +32,7 @@ export default function make_matrix_args(regl, store) {
     const col = highlighted_cols[i];
     const col_nodes = new_col_dict[col] || [];
     for (let j = 0; j < col_nodes.length; j++) {
-      arrs.mask_arr[col_nodes[j]] += .3;
+      arrs.mask_arr[col_nodes[j]] += 0.3;
     }
   }
 
@@ -47,7 +40,7 @@ export default function make_matrix_args(regl, store) {
     const row = highlighted_rows[i];
     const row_nodes = new_row_dict[row] || [];
     for (let j = 0; j < row_nodes.length; j++) {
-      arrs.mask_arr[row_nodes[j]] += .3;
+      arrs.mask_arr[row_nodes[j]] += 0.3;
     }
   }
 
@@ -149,7 +142,7 @@ export default function make_matrix_args(regl, store) {
       mask_arr: {
         buffer: mask_buffer,
         divisor: 1,
-      }
+      },
     },
     blend: {
       enable: true,
