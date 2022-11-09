@@ -224,9 +224,9 @@ export default function buildSingleDendroSlider(regl, store, axis) {
     select(this).attr("transform", "translate(0, " + slider_pos + ")");
     dendroSliderValue = slider_value;
   }
-  function click_dendro_slider() {
+  function click_dendro_slider(event) {
     const clickState = store.selectAll();
-    const clicked_line_position = pointer(this);
+    const clicked_line_position = pointer(event, this);
     const rel_pos = custom_round(clicked_line_position[1], round_level);
     select(
       clickState.visualization.rootElementId + " ." + axis + "_group_circle"

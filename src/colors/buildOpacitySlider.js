@@ -51,8 +51,8 @@ export default (function build_opacity_slider(
     change_opacity(slider_value);
   }
 
-  function click_opacity_slider() {
-    const clicked_line_position = pointer(this);
+  function click_opacity_slider(event) {
+    const clicked_line_position = pointer(event, this);
     const rel_pos = custom_round(clicked_line_position[1], round_level);
     updateOpacityAndSlider(rel_pos);
   }
