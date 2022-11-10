@@ -157,7 +157,6 @@ export default function manual_category_from_dendro(
     .style("margin-right", "2px")
     .style("background-color", "white")
     .on("click", () => {
-      const state = store.selectAll();
       if (store.select("cat_data").showing_color_picker === false) {
         select(store.select("tooltip").tooltip_id + " .color_picker_div")
           .style("height", color_picker_height + "px")
@@ -190,7 +189,6 @@ export default function manual_category_from_dendro(
     .style("color", "white")
     .style("cursor", "pointer")
     .on("click", () => {
-      const state = store.selectAll();
       const new_cat = select(
         store.select("tooltip").tooltip_id + " .custom-cat-input"
       )
