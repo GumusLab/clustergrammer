@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { merge } from "lodash";
+import { produce } from "immer";
 
 export type CatRoom = {
   webgl: number;
@@ -38,15 +39,15 @@ export const categoriesSlice = (id: string) =>
     // The `reducers` field lets us define reducers and generate associated actions
     reducers: {
       setCategoriesState: (state, action: PayloadAction<CategoriesState>) => {
-        state = action.payload;
-        return state;
+        return action.payload;
       },
       mutateCategoriesState: (
         state,
         action: PayloadAction<Partial<CategoriesState>>
       ) => {
-        state = merge(state, action.payload);
-        return state;
+        return produce(state, (draftState) => {
+          merge(draftState, action.payload);
+        });
       },
     },
   });

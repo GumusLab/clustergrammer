@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { merge } from "lodash";
+import { produce } from "immer";
 import { Ordering } from "../../../types/network";
 
 type AxisOrdering = {
@@ -22,12 +23,12 @@ export const orderSlice = (id: string) =>
     // The `reducers` field lets us define reducers and generate associated actions
     reducers: {
       setOrderState: (state, action: PayloadAction<OrderState>) => {
-        state = action.payload;
-        return state;
+        return action.payload;
       },
       mutateOrderState: (state, action: PayloadAction<Partial<OrderState>>) => {
-        state = merge(state, action.payload);
-        return state;
+        return produce(state, (draftState) => {
+          merge(draftState, action.payload);
+        });
       },
     },
   });

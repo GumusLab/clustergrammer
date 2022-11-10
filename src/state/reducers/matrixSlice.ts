@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { merge } from "lodash";
+import { produce } from "immer";
 
 export interface MatrixState {
   opacity_scale: number;
@@ -30,22 +31,21 @@ export const matrixSlice = (id: string) =>
     // The `reducers` field lets us define reducers and generate associated actions
     reducers: {
       setMatrixState: (state, action: PayloadAction<MatrixState>) => {
-        state = action.payload;
-        return state;
+        return action.payload;
       },
       mutateMatrixState: (
         state,
         action: PayloadAction<Partial<MatrixState>>
       ) => {
-        state = merge(state, action.payload);
-        return state;
+        return produce(state, (draftState) => {
+          merge(draftState, action.payload);
+        });
       },
       setOpacityScale: (
         state,
         action: PayloadAction<MatrixState["opacity_scale"]>
       ) => {
         state.opacity_scale = action.payload;
-        return state;
       },
     },
   });

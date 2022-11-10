@@ -11,8 +11,7 @@ export const uiSlice = (id: string) =>
     // The `reducers` field lets us define reducers and generate associated actions
     reducers: {
       setUI: (state, action: PayloadAction<UIState>) => {
-        state = action.payload;
-        return state;
+        return action.payload;
       },
     },
   });

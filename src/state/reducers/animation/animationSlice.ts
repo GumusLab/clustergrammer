@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { merge } from "lodash";
+import { produce } from "immer";
 import genIntPar from "../animation/getInitialAnimationState";
 
 export interface AnimationState {
@@ -26,15 +27,15 @@ export const animationSlice = (id: string) =>
     // The `reducers` field lets us define reducers and generate associated actions
     reducers: {
       setAnimationState: (state, action: PayloadAction<AnimationState>) => {
-        state = action.payload;
-        return state;
+        return action.payload;
       },
       mutateAnimationState: (
         state,
         action: PayloadAction<Partial<AnimationState>>
       ) => {
-        state = merge(state, action.payload);
-        return state;
+        return produce(state, (draftState) => {
+          merge(draftState, action.payload);
+        });
       },
     },
   });

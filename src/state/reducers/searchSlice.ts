@@ -23,7 +23,6 @@ export const searchSlice = (id: string) =>
         action: PayloadAction<SearchState["searched_rows"]>
       ) => {
         state.searched_rows = action.payload;
-        return state;
       },
       setHightlightedRowsAndCols: (
         state,
@@ -34,21 +33,18 @@ export const searchSlice = (id: string) =>
       ) => {
         state.highlighted_rows = action.payload.hightlighted_rows;
         state.highlighted_cols = action.payload.highlighted_cols;
-        return state;
       },
       setHighlightedRows: (
         state,
         action: PayloadAction<SearchState["highlighted_rows"]>
       ) => {
         state.highlighted_rows = action.payload;
-        return state;
       },
       setHighlightedCols: (
         state,
         action: PayloadAction<SearchState["highlighted_cols"]>
       ) => {
         state.highlighted_cols = action.payload;
-        return state;
       }
     },
   });

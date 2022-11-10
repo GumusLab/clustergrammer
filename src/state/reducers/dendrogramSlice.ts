@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { merge } from "lodash";
+import { produce } from "immer";
 
 type TriangleInfo = {
   [x: string]: {
@@ -51,15 +52,15 @@ export const dendrogramSlice = (id: string) =>
     // The `reducers` field lets us define reducers and generate associated actions
     reducers: {
       setDendrogramState: (state, action: PayloadAction<DendrogramState>) => {
-        state = action.payload;
-        return state;
+        return action.payload;
       },
       mutateDendrogramState: (
         state,
         action: PayloadAction<Partial<DendrogramState>>
       ) => {
-        state = merge(state, action.payload);
-        return state;
+        return produce(state, (draftState) => {
+          merge(draftState, action.payload);
+        });
       },
     },
   });
