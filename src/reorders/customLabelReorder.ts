@@ -71,13 +71,12 @@ export default (function customLabelReorder(
     ordered_names.push(newNetwork[other_axis + "_nodes"][inst_index].name);
   });
 
-  const newAxisNodes = _.map(
-    newNetwork[other_axis + "_nodes"],
-    function (inst_node) {
-      inst_node.custom =
-        num_other_labels - ordered_names.indexOf(inst_node.name) - 1;
-    }
-  );
+  const newAxisNodes: any[] = [];
+  _.map(newNetwork[other_axis + "_nodes"], function (inst_node) {
+    inst_node.custom =
+      num_other_labels - ordered_names.indexOf(inst_node.name) - 1;
+    newAxisNodes.push(inst_node);
+  });
 
   dispatch(
     store.actions.mutateNetworkState({
